@@ -2,11 +2,28 @@ extends "pawn.gd"
 
 onready var Grid = get_parent()
 
+onready var root = Grid.get_parent()
+
+var inventory = []
+
 func _ready():
 	update_look_direction(Vector2(1, 0))
 
 
 func _process(_delta):
+	
+	var pos = Grid.world_to_map(position)
+	for id in Grid.locs[pos.x][pos.y].contains:
+		if not (id in inventory):
+			inventory.append(id)
+	
+	var invlisting=""
+	for item1 in inventory:
+		invlisting+=str(item1)+"\n"
+	root.get_node("InventoryWindow").set_text(invlisting)
+			
+	
+	
 	var input_direction = get_input_direction()
 	if not input_direction:
 		return
@@ -31,6 +48,9 @@ func update_look_direction(direction):
 
 
 func move_to(target_position):
+	
+	print(Grid.world_to_map(position))
+	
 	set_process(false)
 	$AnimationPlayer.play("walk")
 
