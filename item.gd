@@ -32,7 +32,15 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	update()
+	var loc = location
+	while not ("x" in loc):
+		loc=loc.location
+	#print(loc)
+	if loc:	
+		var pos = grid.map_to_world(Vector2(loc.x,loc.y))
+		#sprite.draw_texture(sprite.texture,pos)
+		sprite.position = pos + grid.cell_size/2
+		#print(pos)
 		
 
 #func _draw():
@@ -47,12 +55,3 @@ func _process(delta):
 #
 #	draw_texture(texture,Vector2(0,0))
 
-func _draw():
-	#var loc = instance_from_id(location)
-	var loc = location
-	#print(loc)
-	if loc:	
-		var pos = grid.map_to_world(Vector2(loc.x,loc.y))
-		#sprite.draw_texture(sprite.texture,pos)
-		sprite.position = pos
-		#print(pos)

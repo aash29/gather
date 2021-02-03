@@ -6,17 +6,34 @@ onready var root = Grid.get_parent()
 
 var inventory = []
 
+var location :Object
+
+
+func pick():
+	var pos = Grid.world_to_map(position)
+	var itemsOnGround = Grid.locs[pos.x][pos.y].contains
+	for id in itemsOnGround:
+		if not (id in inventory):
+			inventory.append(id)
+			itemsOnGround.remove(itemsOnGround.find(id))
+			id.location = self
+			
+	
+
+
 func _ready():
 	update_look_direction(Vector2(1, 0))
 
 
+
 func _process(_delta):
 	
-	var pos = Grid.world_to_map(position)
-	for id in Grid.locs[pos.x][pos.y].contains:
-		if not (id in inventory):
-			inventory.append(id)
+	var coords=Grid.world_to_map(position)
+	print(coords)
 	
+	location = Grid.locs[coords.x][coords.y]
+	
+		
 	var invlisting=""
 	for item1 in inventory:
 		invlisting+=str(item1)+"\n"
@@ -49,7 +66,7 @@ func update_look_direction(direction):
 
 func move_to(target_position):
 	
-	print(Grid.world_to_map(position))
+
 	
 	set_process(false)
 	$AnimationPlayer.play("walk")

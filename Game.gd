@@ -11,7 +11,7 @@ func _ready():
 	
 	var button = Button.new()
 	button.text = "Pick"
-	#button.connect("pressed", self, "_button_pressed")
+	button.connect("pressed", get_tree().get_root().get_node("Main/Grid/Actor"), "pick")
 	add_child(button)
 
 
